@@ -14,7 +14,7 @@ INSERT INTO EMPLOYEE
 VALUES('A1','BALAKE','Brad','M','01/01/1965','1 avenue des Champs-Élysées,75008,Paris','01/01/2005','admin',5000,0618748451);
 //2
 INSERT INTO EMPLOYEE
-VALUES('A2','GORDON','James','M','01/01/1956','2 avenue des Champs-Élysées,75008,Paris','01/02/2005','admin',5000,0618748452);
+VALUES('A2','GORDON','James','M','01/01/1956','2 avenue des Champs-Élysées,75008,Paris','01/02/2005','admin',8000,0618748452);
 //3
 INSERT INTO EMPLOYEE
 VALUES('A3','BEN','Park','M','01/01/1957','3 avenue des Champs-Élysées,75008,Paris','01/01/2005','admin',5000,0618748453);
@@ -45,7 +45,7 @@ VALUES('M5','SMITH','Stan','M','01/01/1959','10 avenue des Champs-Élysées,7500
 //12 pilotes
 //1
 INSERT INTO EMPLOYEE
-VALUES('P1','BOND','Jimmy','M','01/01/1975','1 avenue publique,75001,Paris','01/01/2005','pilote',5000,0616748451);
+VALUES('P1','BOND','Jimmy','M','01/01/1975','1 avenue publique,75001,Paris','01/01/2005','pilote',6000,0616748451);
 //2
 INSERT INTO EMPLOYEE
 VALUES('P2','KENT','Clarky','M','01/01/1976','2 avenue publique,75001,Paris','01/02/2005','pilote',5000,0616748452);
