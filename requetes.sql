@@ -10,9 +10,9 @@ ORDER BY REV.REV_DATE DESC;
 
 
 --------------------------------------------------------
---Quel est le nom du salarié de la catégorie navigant ayant le plus gros salaire ?
+--2.Quel est le nom du salarié de la catégorie navigant ayant le plus gros salaire ?
 --------------------------------------------------------
-SELECT EMP_NOM,EMP_NOM,EMP_CATEGORIE,EMP_SALAIRE
+SELECT EMP_NOM,EMP_PRENOM,EMP_CATEGORIE,EMP_SALAIRE
 FROM EMPLOYEE
 WHERE EMP_SALAIRE = 
 (
@@ -20,6 +20,30 @@ WHERE EMP_SALAIRE =
 	FROM EMPLOYEE
 	WHERE EMP_CATEGORIE ='pilote' OR EMP_CATEGORIE ='steward'
 ) AND (EMP_CATEGORIE ='pilote' OR EMP_CATEGORIE ='steward');
+
+
+--------------------------------------------------------
+--3.Quel est le nom du salarié le plus récemment embauché ?
+--------------------------------------------------------
+SELECT EMP_NOM,EMP_PRENOM,EMP_CATEGORIE,EMP_SALAIRE,EMP_DATE_EMBAUCHE
+FROM EMPLOYEE
+WHERE EMP_DATE_EMBAUCHE = 
+(
+	SELECT MAX(EMP_DATE_EMBAUCHE) 
+	FROM EMPLOYEE
+) ;
+
+--------------------------------------------------------
+--4.Quels sont les salaires moyens par fonction classés par ordre décroissants ?
+--------------------------------------------------------
+SELECT EMP_CATEGORIE,ROUND（AVG(EMP_SALAIRE)，1）
+FROM EMPLOYEE
+GROUP BY EMP_CATEGORIE
+ORDER BY AVG(EMP_SALAIRE) DESC;
+
+--------------------------------------------------------
+--Quel est la mission de vol comportant le plus d’escales ?
+--------------------------------------------------------
 
 
 --------------------------------------------------------

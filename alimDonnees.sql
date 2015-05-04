@@ -60,7 +60,7 @@ INSERT INTO EMPLOYEE
 VALUES('P5','STARK','Tonny','M','01/01/1979','5 avenue publique,75001,Paris','01/01/2005','pilote',5000,0616748455);
 //6
 INSERT INTO EMPLOYEE
-VALUES('P6','ROGER','Steve','M','01/01/1980','6 avenue publique,75001,Paris','01/01/2005','pilote',5000,0616748456);
+VALUES('P6','ROGER','Steve','M','01/01/1980','6 avenue publique,75001,Paris','01/01/2009','pilote',5000,0616748456);
 //7
 INSERT INTO EMPLOYEE
 VALUES('P7','ROMANOFF','Natasha','F','01/01/1981','7 avenue publique,75001,Paris','01/01/2005','pilote',5000,0616748457);
