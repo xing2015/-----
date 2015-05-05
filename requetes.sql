@@ -85,13 +85,25 @@ GROUP BY VILLE.VILLE_NOM;
 
 
 --------------------------------------------------------
---7.Quel est le nom du pilote affecté au vol du 19 décembre 2014 au départ de Créteil à
+--7.Quel est le nom du pilote affecté au vol du 19 décembre 2014 au départ de Créteil à 10h00 ?
 --------------------------------------------------------
+SELECT VOL.MIS_ID AS MISSION_ID,VOL.VOL_DATE,MIS.MIS_heure_DEPART AS HEURE_DEPART,EMP.EMP_NOM,EMP.EMP_PRENOM
+FROM EMPLOYEE EMP,VOL,EQUIPE,MISSION MIS
+WHERE VOL.EQUIPE_ID=EQUIPE.EQUIPE_ID
+AND VOL.MIS_ID=MIS.MIS_ID
+AND EMP.EMP_ID=EQUIPE.PILOTE_ID
+AND VOL.VOL_DATE= '19/12/2014'
+AND MIS.MIS_heure_DEPART='10:00';
 
-
-
-
-
+--------------------------------------------------------
+--8.Quel est le prochain vol à destination d’Annecy au départ de Créteil ?
+SELECT 'Créteil - Annecy' AS VOL,MIS.MIS_ID AS MISSION_ID, VOL.VOL_DATE,MIS.MIS_HEURE_DEPART
+FROM MISSION MIS, VOL
+WHERE (TO_TIMESTAMP(MIS.MIS_HEURE_DEPART,'HH24:MI') >= SYSTIMESTAMP OR VOL.VOL_DATE>SYSDATE)
+AND MIS.MIS_VILLE_DEPART =1 AND MIS.MIS_VILLE_ARRIVE=3
+AND VOL.MIS_ID=MIS.MIS_ID
+AND rownum=1
+;
 
 --------------------------------------------------------
 --yuming
