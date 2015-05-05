@@ -42,18 +42,27 @@ GROUP BY EMP_CATEGORIE
 ORDER BY AVG(EMP_SALAIRE) DESC;
 
 --------------------------------------------------------
---Quel est la mission de vol comportant le plus d’escales ?
+--5.Quel est la mission de vol comportant le plus d’escales ?
 --------------------------------------------------------
-SELECT MIS_ID
-FROM MISSION MIS,ESCALE 
-WHERE MIS_ID IN (
-	SELECT MIS_ID
+SELECT distinct MIS.MIS_ID AS MISSION,(SELECT ville_nom from ville where ville_id= MIS.MIS_VILLE_DEPART) AS VILLE_DEPART,
+(SELECT ville_nom from ville where ville_id= ESCALE.ESC_VILLE_ID) AS VILLE_ESCALE,
+(SELECT ville_nom from ville where ville_id= MIS.MIS_VILLE_arrive) AS VILLE_ARRIVE
+FROM MISSION MIS,VILLE,ESCALE 
+WHERE ESCALE.ESC_MIS_ID = MIS.MIS_ID AND
+	  MIS.MIS_ID IN 
+	(
+	SELECT ESC_MIS_ID
 	FROM ESCALE
-	GROUP BY MIS_ID
-	HAVING COUNT(MIS_ID)=(SELECT MAX(COUNT(ESC_MIS_ID))	FROM ESCALE)
+	GROUP BY ESC_MIS_ID
+	HAVING COUNT(ESC_MIS_ID)=(
+								SELECT MAX(COUNT(ESC_MIS_ID))	
+								FROM ESCALE 
+								GROUP BY ESC_MIS_ID
+							  )
 	
-)
-
+	)
+  ;
+  
 
 
 
