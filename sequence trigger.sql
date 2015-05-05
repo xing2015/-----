@@ -17,6 +17,7 @@ CREATE SEQUENCE increase_mission_seq
 START WITH 1
 INCREMENT BY 1
 NOMAXVALUE NOCYCLE NOCACHE;
+ --xym
 
 CREATE SEQUENCE increase_revision_seq
 START WITH 1
@@ -40,7 +41,7 @@ END;
 CREATE OR REPLACE TRIGGER tgr_equipe_id
 BEFORE INSERT ON "EQUIPE" 
 FOR EACH ROW WHEN (new.equipe_id IS NULL)
-BEGIN 
+BEGIN  --xym
 	SELECT increase_equipe_seq.nextval INTO :new.equipe_id
 	FROM DUAL;
 END;

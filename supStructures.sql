@@ -14,6 +14,7 @@ alter table mission_equipe drop constraint mis_fk cascade;
 alter table navigant drop constraint emp_id_pk cascade;
 alter table revision drop constraint rev_avion_fk cascade;
 alter table revision drop constraint rev_meca_fk cascade;
+ --xym
 
 
 DROP SEQUENCE increase_emp_seq;

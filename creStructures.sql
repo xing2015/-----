@@ -90,10 +90,11 @@ CREATE TABLE  VILLE
   ALTER TABLE  ELEMENT_REVISION  ADD CONSTRAINT  REV_FK  FOREIGN KEY ( REV_ID )
 	  REFERENCES  REVISION  ( REV_ID ) ;
 --------------------------------------------------------
---  Ref Constraints for Table EMPLOYEE
+--  Ref Constraints for Table EMPLOYEE 
 --------------------------------------------------------	  
 	  ALTER TABLE EMPLOYEE ADD CONSTRAINT categorie_check CHECK(emp_categorie IN('admin','pilote','steward','mecanicien'));
-	  ALTER TABLE EMPLOYEE ADD CONSTRAINT sexe_check CHECK(emp_sexe IN('F','M'));
+	  ALTER TABLE EMPLOYEE ADD CONSTRAINT sexe_check CHECK(emp_sexe IN('F','M')); --xym
+
 --------------------------------------------------------
 --  Ref Constraints for Table EQUIPE
 --------------------------------------------------------

@@ -79,7 +79,7 @@ VALUES('P11','SUMMERS','Scott','M','01/01/1985','11avenue publique,75001,Paris',
 //12
 INSERT INTO EMPLOYEE
 VALUES('P12','PARK','Piérre','M','01/01/1986','12 avenue publique,75001,Paris','01/01/2005','pilote',5000,0616748462);
-
+ --xym
 
 //15 stewards
 //1
