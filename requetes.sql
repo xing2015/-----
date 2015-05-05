@@ -67,6 +67,26 @@ WHERE ESCALE.ESC_MIS_ID = MIS.MIS_ID AND
 --------------------------------------------------------
 --6.Quelle est la ville comportant le plus de mission de vols au départ et à l’arrivée confondus ?
 --------------------------------------------------------
+SELECT  VILLE.VILLE_NOM,count(*) AS NB_MISSION
+FROM VILLE,MISSION MIS
+WHERE (VILLE.VILLE_ID = MIS.MIS_VILLE_DEPART OR VILLE.VILLE_ID =MIS.MIS_VILLE_ARRIVE)
+AND VILLE.VILLE_ID IN
+(
+	SELECT MIS_VILLE_DEPART 
+	FROM MISSION
+	GROUP BY MIS_VILLE_DEPART
+	HAVING COUNT(MIS_VILLE_DEPART)=(
+					SELECT MAX(COUNT(MIS_VILLE_DEPART))
+					FROM MISSION
+					GROUP BY MIS_VILLE_DEPART
+					)
+)
+GROUP BY VILLE.VILLE_NOM;
+
+
+--------------------------------------------------------
+--7.Quel est le nom du pilote affecté au vol du 19 décembre 2014 au départ de Créteil à
+--------------------------------------------------------
 
 
 
