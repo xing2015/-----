@@ -106,5 +106,22 @@ AND rownum=1
 ;
 
 --------------------------------------------------------
+--9.Quels sont les pilotes qui ne sont jamais allés à Annecy ?
+--------------------------------------------------------
+SELECT DISTINCT EQUIPE.PILOTE_ID,EMP.EMP_NOM,EMP.EMP_PRENOM
+FROM VOL,EQUIPE,EMPLOYEE EMP
+WHERE VOL.EQUIPE_ID=EQUIPE.EQUIPE_ID
+AND EMP.EMP_ID = EQUIPE.PILOTE_ID
+AND MIS_ID NOT IN( 
+  SELECT MIS.MIS_ID
+  FROM MISSION MIS,ESCALE ESC
+  WHERE MIS.MIS_ID = ESC.ESC_MIS_ID
+  AND MIS.MIS_VILLE_DEPART !=3
+  AND MIS.MIS_VILLE_ARRIVE !=3
+  AND ESC.ESC_VILLE_ID !=3
+)
+ORDER BY EQUIPE.PILOTE_ID
+;
+--------------------------------------------------------
 --yuming
 --------------------------------------------------------
