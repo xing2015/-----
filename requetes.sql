@@ -64,12 +64,8 @@ WHERE ESCALE.ESC_MIS_ID = MIS.MIS_ID AND
   ;
   
 
-
-
-
-
 --------------------------------------------------------
---Quelle est la ville comportant le plus de mission de vols au départ et à l’arrivée confondus ?
+--6.Quelle est la ville comportant le plus de mission de vols au départ et à l’arrivée confondus ?
 --------------------------------------------------------
 
 
