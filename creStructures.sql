@@ -29,18 +29,18 @@ CREATE TABLE  EMPLOYEE
 	 EMP_SALAIRE  NUMBER NOT NULL, 
 	 EMP_TEL  NUMBER NOT NULL
    );
-
+/*
  CREATE TABLE  EQUIPE  
    (	 EQUIPE_ID  NUMBER PRIMARY KEY, 
 	 PILOTE_ID  VARCHAR2(5) NOT NULL, 
 	 STEWARD_ID  VARCHAR2(5) NOT NULL, 
 	 AVION_NII  VARCHAR2(50 BYTE) NOT NULL
    ); 
-
+*/
 CREATE TABLE  ESCALE  
    (	 ESC_MIS_ID  NUMBER, 
 	 ESC_VILLE_ID  NUMBER NOT NULL, 
-	 ESC_DUREE  VARCHAR2(5) NOT NULL,
+	 ESC_HEURE  VARCHAR2(5) NOT NULL,
 	  CONSTRAINT ESCALE_pk PRIMARY KEY(ESC_MIS_ID,ESC_VILLE_ID)
    );
 
@@ -53,10 +53,14 @@ CREATE TABLE  MISSION
    );
 
  CREATE TABLE  VOL  
-   ( MIS_ID  NUMBER, 
-	 EQUIPE_ID  NUMBER,
-	 VOL_DATE DATE,
-	 CONSTRAINT mis_equipe_pk PRIMARY KEY(MIS_ID,VOL_DATE)
+   ( 
+	 VOL_ID NUMBER ,
+     MIS_ID  NUMBER NOT NULL, 
+	 VOL_DATE DATE NOT NULL,
+	 PILOTE_ID  VARCHAR2(5) , 
+	 STEWARD_ID  VARCHAR2(5), 
+	 AVION_NII  VARCHAR2(50 BYTE),
+	 CONSTRAINT VOL_PK PRIMARY KEY(VOL_ID,MIS_ID,VOL_DATE)
    ); 
 
 
@@ -81,6 +85,26 @@ CREATE TABLE  VILLE
 	 VILLE_PAYS  VARCHAR2(20 BYTE) NOT NULL, 
 	 VILLE_POSTAL  NUMBER NOT NULL
    );
+   
+CREATE TABLE PASSAGER
+	(
+		P_ID NUMBER PRIMARY KEY,
+		P_NOM VARCHAR2(100) NOT NULL,
+		P_PRENOM VARCHAR2(100) NOT NULL,
+		P_DATE_NAISSANCE DATE NOT NULL,
+		P_TEL NUMBER NOT NULL,
+		P_EMAIL VARCHAR2(100) NOT NULL,
+		P_ADRESSE VARCHAR2(200) NOT NULL,
+		P_PASSEPORT VARCHAR2(50) NOT NULL,
+		P_SEXE VARCHAR2(5) NOT NULL		
+	)   ;
+	
+CREATE TABLE RESERVATION
+		(
+			RES_ID NUMBER PRIMARY KEY,
+			RES_VOL_ID NUMBER NOT NULL,
+			RES_P_ID NUMBER NOT NULL
+		);
 
 -------------------------------------------------------
 --  Ref Constraints for Table ELEMENT_REVISION
@@ -99,13 +123,13 @@ CREATE TABLE  VILLE
 --------------------------------------------------------
 --  Ref Constraints for Table EQUIPE
 --------------------------------------------------------
-
+/*
   ALTER TABLE  EQUIPE  ADD CONSTRAINT  AVION_NII_FK  FOREIGN KEY ( AVION_NII )
 	  REFERENCES  AVION  ( AV_NII ) ;
   ALTER TABLE  EQUIPE  ADD CONSTRAINT  PILOTE_ID_FK  FOREIGN KEY ( PILOTE_ID )
 	  REFERENCES  EMPLOYEE  ( EMP_ID ) ;
   ALTER TABLE  EQUIPE  ADD CONSTRAINT  STEWARD_ID_FK  FOREIGN KEY ( STEWARD_ID )
-	  REFERENCES  EMPLOYEE  ( EMP_ID ) ;
+	  REFERENCES  EMPLOYEE  ( EMP_ID ) ;*/
 --------------------------------------------------------
 --  Ref Constraints for Table ESCALE
 --------------------------------------------------------
@@ -126,10 +150,16 @@ CREATE TABLE  VILLE
 --  Ref Constraints for Table VOL
 --------------------------------------------------------
 
-  ALTER TABLE  VOL  ADD CONSTRAINT  EQUIPE_FK  FOREIGN KEY ( EQUIPE_ID )
-	  REFERENCES  EQUIPE  ( EQUIPE_ID ) ;
+  /*ALTER TABLE  VOL  ADD CONSTRAINT  EQUIPE_FK  FOREIGN KEY ( EQUIPE_ID )
+	  REFERENCES  EQUIPE  ( EQUIPE_ID ) ;*/
   ALTER TABLE  VOL  ADD CONSTRAINT  MIS_FK  FOREIGN KEY ( MIS_ID )
 	  REFERENCES  MISSION  ( MIS_ID ) ;
+ ALTER TABLE  VOL  ADD CONSTRAINT  AVION_NII_FK  FOREIGN KEY ( AVION_NII )
+	  REFERENCES  AVION  ( AV_NII ) ;
+  ALTER TABLE  VOL  ADD CONSTRAINT  PILOTE_ID_FK  FOREIGN KEY ( PILOTE_ID )
+	  REFERENCES  EMPLOYEE  ( EMP_ID ) ;
+  ALTER TABLE  VOL  ADD CONSTRAINT  STEWARD_ID_FK  FOREIGN KEY ( STEWARD_ID )
+	  REFERENCES  EMPLOYEE  ( EMP_ID ) ;	  
 --------------------------------------------------------
 --  Ref Constraints for Table NAVIGANT
 --------------------------------------------------------
@@ -144,4 +174,16 @@ CREATE TABLE  VILLE
 	  REFERENCES  AVION  ( AV_NII ) ;
   ALTER TABLE  REVISION  ADD CONSTRAINT  REV_MECA_FK  FOREIGN KEY ( REV_MECA_ID )
 	  REFERENCES  EMPLOYEE  ( EMP_ID ) ;
-   
+ --------------------------------------------------------
+--  Ref Constraints for Table RESERVATION
+--------------------------------------------------------
+  
+ ALTER TABLE  RESERVATION  ADD CONSTRAINT  RES_VOL_ID_PK  FOREIGN KEY ( RES_VOL_ID )
+	  REFERENCES  VOL  ( VOL_ID ) ;
+  ALTER TABLE  RESERVATION  ADD CONSTRAINT  RES_P_ID_PK  FOREIGN KEY ( RES_P_ID )
+	  REFERENCES  PASSAGER  ( P_ID ) ;
+  --------------------------------------------------------
+--  Ref Constraints for Table passager
+--------------------------------------------------------     
+ ALTER TABLE PASSAGER ADD CONSTRAINT p_sexe_check CHECK(p_sexe IN('F','M')); --xym
+	 

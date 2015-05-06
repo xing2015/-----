@@ -29,6 +29,21 @@ START WITH 1
 INCREMENT BY 1
 NOMAXVALUE NOCYCLE NOCACHE;
 
+CREATE SEQUENCE increase_vol_seq
+START WITH 1
+INCREMENT BY 1
+NOMAXVALUE NOCYCLE NOCACHE;
+
+CREATE SEQUENCE increase_passager_seq
+START WITH 1
+INCREMENT BY 1
+NOMAXVALUE NOCYCLE NOCACHE;
+
+
+CREATE SEQUENCE increase_reservation_seq
+START WITH 1
+INCREMENT BY 1
+NOMAXVALUE NOCYCLE NOCACHE;
 
 CREATE OR REPLACE TRIGGER tgr_ELEMENT_id
 BEFORE INSERT ON "ELEMENT" 
@@ -70,7 +85,30 @@ BEGIN
 	FROM DUAL;
 END;
 
+CREATE OR REPLACE TRIGGER tgr_vol_id
+BEFORE INSERT ON "VOL" 
+FOR EACH ROW WHEN (new.vol_id IS NULL)
+BEGIN 
+	SELECT increase_vol_seq.nextval INTO :new.vol_id
+	FROM DUAL;
+END;
 
+CREATE OR REPLACE TRIGGER tgr_passager_id
+BEFORE INSERT ON "PASSAGER" 
+FOR EACH ROW WHEN (new.p_id IS NULL)
+BEGIN 
+	SELECT increase_passager_seq.nextval INTO :new.p_id
+	FROM DUAL;
+END;
+
+
+CREATE OR REPLACE TRIGGER tgr_reservation_id
+BEFORE INSERT ON "RESERVATION" 
+FOR EACH ROW WHEN (new.res_id IS NULL)
+BEGIN 
+	SELECT increase_reservation_seq.nextval INTO :new.res_id
+	FROM DUAL;
+END;
 -------------------------------------
 --Déclancheurs
 -------------------------------------

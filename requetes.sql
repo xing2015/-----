@@ -190,6 +190,26 @@ AND (TO_TIMESTAMP(MIS.MIS_HEURE_ARRIVE,'HH24:MI')) >= TO_TIMESTAMP(TO_char(SYSTI
 AND MIS.MIS_ID=VOL.MIS_ID;
 
 --------------------------------------------------------
+--13.Quelle est la liste des passagers du vol du 03/06/2014 entre Enghien et Annecy ?
+--------------------------------------------------------
+SELECT RES.RES_ID AS RESERVATION_ID,RES.RES_VOL_ID AS VOL_ID, P.P_NOM AS NOM ,P.P_PRENOM AS PRENOM
+FROM PASSAGER P,RESERVATION RES
+WHERE P.P_ID = RES.RES_P_ID
+AND RES.RES_VOL_ID IN (
+	SELECT VOL.VOL_ID
+	FROM VOL INNER JOIN ESCALE ESC ON VOL.MIS_ID = ESC.ESC_MIS_ID, MISSION MIS
+	WHERE VOL.VOL_DATE='03/06/2014' AND ESC.ESC_VILLE_ID =(SELECT VILLE_ID FROM VILLE WHERE VILLE_NOM='Enghien')
+		AND (
+			MIS.MIS_VILLE_DEPART = (SELECT VILLE_ID FROM VILLE WHERE VILLE_NOM='Annecy' ) 	
+			OR MIS.MIS_VILLE_DEPART = (SELECT VILLE_ID FROM VILLE WHERE VILLE_NOM='Annecy')
+			)
+);
+
+
+
+
+
+--------------------------------------------------------
 --yuming
 --------------------------------------------------------
 
