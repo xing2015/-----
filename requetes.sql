@@ -127,6 +127,45 @@ AND EMP_ID NOT IN
           )
 
 )ORDER BY EMP_NOM,EMP_PRENOM;
+
+--------------------------------------------------------
+--10.Quels sont les vols au départ de Créteil ayant une escale maximum ?
+--------------------------------------------------------
+//Résultat est Créteil - Brest,car dans VOL,on n a pas alimenté MISSION 6.
+SELECT MIS.MIS_ID AS MISSION ,VOL.VOL_DATE,(SELECT VILLE_NOM FROM VILLE WHERE VILLE_ID =MIS.MIS_VILLE_DEPART) AS VILLE_DEPART,(SELECT VILLE_NOM FROM VILLE WHERE VILLE_ID =MIS.MIS_VILLE_ARRIVE) AS VILLE_ARRIVE
+FROM MISSION MIS,VOL
+WHERE MIS.MIS_ID = VOL.MIS_ID 
+AND MIS.MIS_ID IN
+    (
+    SELECT ESC_MIS_ID 
+    FROM ESCALE
+    GROUP BY ESC_MIS_ID
+    HAVING COUNT(*)=
+          (
+             SELECT MAX(COUNT(ESC_MIS_ID))
+             FROM ESCALE
+             WHERE ESC_MIS_ID IN
+             (
+                 SELECT MISSION.MIS_ID 
+                 FROM MISSION,VOL,ESCALE
+                 WHERE MIS_VILLE_DEPART=(SELECT VILLE_ID FROM VILLE WHERE VILLE_NOM='Créteil')
+                  AND MISSION.MIS_ID = VOL.MIS_ID
+                  AND VOL.MIS_ID = ESCALE.ESC_MIS_ID
+             )
+             GROUP BY ESC_MIS_ID
+             
+          )	 
+);
+
+
+--------------------------------------------------------
+--11.Quels sont les vols ayant été effectués sans escale ?
+--------------------------------------------------------
+
+
+
+
+
 --------------------------------------------------------
 --yuming
 --------------------------------------------------------
