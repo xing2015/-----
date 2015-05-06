@@ -132,10 +132,11 @@ AND EMP_ID NOT IN
 --10.Quels sont les vols au départ de Créteil ayant une escale maximum ?
 --------------------------------------------------------
 //Résultat est Créteil - Brest,car dans VOL,on n a pas alimenté MISSION 6.
-SELECT MIS.MIS_ID AS MISSION ,VOL.VOL_DATE,(SELECT VILLE_NOM FROM VILLE WHERE VILLE_ID =MIS.MIS_VILLE_DEPART) AS VILLE_DEPART,(SELECT VILLE_NOM FROM VILLE WHERE VILLE_ID =MIS.MIS_VILLE_ARRIVE) AS VILLE_ARRIVE
+SELECT MIS.MIS_ID AS MISSION ,VOL.VOL_DATE,(SELECT VILLE_NOM FROM VILLE WHERE VILLE_ID =MIS.MIS_VILLE_DEPART) AS VILLE_DEPART,
+(SELECT VILLE_NOM FROM VILLE WHERE VILLE_ID =MIS.MIS_VILLE_ARRIVE) AS VILLE_ARRIVE
 FROM MISSION MIS,VOL
 WHERE MIS.MIS_ID = VOL.MIS_ID 
-AND MIS.MIS_ID IN
+AND VOL.MIS_ID IN
     (
     SELECT ESC_MIS_ID 
     FROM ESCALE
@@ -161,11 +162,34 @@ AND MIS.MIS_ID IN
 --------------------------------------------------------
 --11.Quels sont les vols ayant été effectués sans escale ?
 --------------------------------------------------------
+//normalment il ny pas de mission sans escale,donc ici, pour tester, nous ajoutons un mission sans escale(créteil à annecy);
 
+INSERT INTO MISSION VALUES(9,1,3,'10:00','12:00');
+INSERT INTO VOL VALUES(9,1,SYSDATE);
 
+SELECT VOL.MIS_ID AS MISSION ,VOL.VOL_DATE,(SELECT VILLE_NOM FROM VILLE WHERE VILLE_ID =MIS.MIS_VILLE_DEPART) AS VILLE_DEPART,
+(SELECT VILLE_NOM FROM VILLE WHERE VILLE_ID =MIS.MIS_VILLE_ARRIVE) AS VILLE_ARRIVE
+FROM MISSION MIS,VOL
+WHERE MIS.MIS_ID = VOL.MIS_ID 
+AND VOL.MIS_ID NOT IN
+(
+	SELECT MIS_ID
+	FROM VOL INNER JOIN ESCALE ON VOL.MIS_ID = ESCALE.ESC_MIS_ID
+);
 
-
+--------------------------------------------------------
+--12.Quels sont les avions actuellement en vol à ce jour et cette heure ?
+--------------------------------------------------------
+SELECT VOL.MIS_ID AS MISSION_ID, EQUIPE.AVION_NII,VOL.VOL_DATE,
+  MIS.MIS_HEURE_DEPART|| ' - ' ||MIS.MIS_HEURE_ARRIVE AS HEURE_DEPART_ARRIVE,
+  (SELECT VILLE_NOM FROM VILLE WHERE VILLE_ID =MIS.MIS_VILLE_DEPART)||' - '||(SELECT VILLE_NOM FROM VILLE WHERE VILLE_ID =MIS.MIS_VILLE_ARRIVE) AS VILLE_DEPART_ARRIVE
+FROM VOL INNER JOIN EQUIPE ON VOL.EQUIPE_ID = EQUIPE.EQUIPE_ID, MISSION MIS
+WHERE VOL.VOL_DATE=to_date(SYSDATE,'dd/mm/yy') 
+AND (TO_TIMESTAMP(MIS.MIS_HEURE_DEPART,'HH24:MI')) <= SYSTIMESTAMP 
+AND (TO_TIMESTAMP(MIS.MIS_HEURE_ARRIVE,'HH24:MI')) >= TO_TIMESTAMP(TO_char(SYSTIMESTAMP,'HH24:MI'),'HH24:MI')  
+AND MIS.MIS_ID=VOL.MIS_ID;
 
 --------------------------------------------------------
 --yuming
 --------------------------------------------------------
+
