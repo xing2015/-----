@@ -42,19 +42,22 @@ create or replace PROCEDURE P_RESERVATION
 AS
 	TARGET_VOL NUMBER;
 	TARGET_AVION NUMBER;
-    PLACE_TOTAL NUMBER;
+  PLACE_TOTAL NUMBER;
 	PLACE_RESERVE NUMBER;
 	PLACE_DISPONIBLE NUMBER;
+
 BEGIN
-	SELECT MIS.VOL_ID INTO TARGET_VOL 
+	
+  SELECT VOL.VOL_ID INTO TARGET_VOL 
 	FROM VOL,MISSION MIS
 	WHERE VOL.MIS_ID=MIS.MIS_ID
 	AND MIS.MIS_VILLE_DEPART =(SELECT VILLE_ID FROM VILLE WHERE VILLE_NOM=villeOrigine)
 	AND MIS.MIS_VILLE_ARRIVE = (SELECT VILLE_ID FROM VILLE WHERE VILLE_NOM=villeDestination)
 	AND VOL.VOL_DATE = dateVol ;	
-	--tester:il y a cette vol?
-	IF VOL_TARGET IS NULL THEN
-	 
+	DBMS_OUTPUT.PUT_LINE('Vol id est:'||TARGET_VOL);
+	 /*
+  --tester:il y a cette vol?
+	IF TARGET_VOL IS NULL THEN
 	  DBMS_OUTPUT.PUT_LINE('Pas de vol,veuillez corriger votre commande.');
 	 
 	ELSE
@@ -62,24 +65,34 @@ BEGIN
       SELECT AV_CAPACITE INTO PLACE_TOTAL
       FROM AVION
       WHERE AV_NII = (SELECT AVION_NII FROM VOL WHERE VOL_ID = TARGET_VOL);
-      
+      	DBMS_OUTPUT.PUT_LINE('Le nombre de place total :'||PLACE_TOTAL);
+
       SELECT COUNT(P_ID) INTO PLACE_RESERVE
       FROM VOL_PASSAGER
       WHERE VOL_ID = TARGET_VOL;
-      
+      DBMS_OUTPUT.PUT_LINE('Le nombre de place reservé :'||PLACE_TOTAL);
+
       PLACE_DISPONIBLE:= PLACE_TOTAL-PLACE_RESERVE;
-      
+      DBMS_OUTPUT.PUT_LINE('Le nombre de place disponible :'||PLACE_TOTAL);
+
       IF PLACE_DISPONIBLE< nombrePassagers THEN
       
           DBMS_OUTPUT.PUT_LINE('Pas de vol,veuillez corriger votre commande.');
       
       ELSE
-       INSERT INTO RESERVATION VALUES(null,villeOrigine,villeDestination,dateVol,nombrePassagers,nomClient,listePassager);
+       INSERT INTO RESERVATION VALUES( null, villeOrigine, villeDestination, dateVol, nombrePassagers, nomClient, listePassager);
        DBMS_OUTPUT.PUT_LINE('Reservation OK!');
       END IF;
       
-	  END IF;
+	  END IF;*/
 	END;
+	
+	
+SET serveroutput ON;
+CALL P_RESERVATION('Créteil', 'Annecy', '03/06/2014', 2, 'Duchemin', 'Duchemin Paul ;Duchemin Virginie ;');
+CALL P_RESERVATION('Enghien', 'Trouville', '06-juin-2014', 2, 'Durand', 'Durand René ;Durand Hélène ;');
+call P_RESERVATION('Enghien', 'Trouville', '07-juin-14', 2,'Durand', 'Durand René ;Durand Hélène ;');
+
 -----------------------------------------------------
 
 -----------------------------------------------------

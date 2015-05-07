@@ -116,7 +116,7 @@ CREATE TABLE VOL_PASSAGER
 
 CREATE TABLE RESERVATION
   (
-	res_id			 NUMBER PRIMARY KEY;
+	res_id			 NUMBER PRIMARY KEY,
     villeOrigine     VARCHAR2(30) NOT NULL,
     villeDestination VARCHAR2(30) NOT NULL,
     dateVol          DATE,
