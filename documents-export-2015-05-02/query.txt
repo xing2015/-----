@@ -1,0 +1,32 @@
+1.SELECT Top 1 Max(Revision.DateRevision) AS MaxDeDateRevision, Personnel.nom, Personnel.fonction, Revision.id_avion
+FROM Personnel LEFT JOIN Revision ON Personnel.id_personnel = Revision.id_mecanicien
+GROUP BY Personnel.nom, Personnel.fonction, Revision.id_avion
+HAVING (((Personnel.fonction)="mecanicien") AND ((Revision.id_avion)="2345297400"))
+ORDER BY Max(Revision.DateRevision) DESC;
+
+2.SELECT Top 1 Personnel.nom, Personnel.Categorie, Max(Personnel.salaire) AS MaxDesalaire
+FROM Personnel
+GROUP BY Personnel.nom, Personnel.Categorie
+HAVING (((Personnel.Categorie)="naviguant"))
+ORDER BY Max(Personnel.salaire) DESC;
+3.SELECT Top 1 Personnel.nom, Last(Personnel.DateEmbauche) AS DernierDeDateEmbauche
+FROM Personnel
+GROUP BY Personnel.nom
+ORDER BY Last(Personnel.DateEmbauche) DESC;
+4.SELECT Avg(Personnel.salaire) AS MoyenneDesalaire, Personnel.fonction
+FROM Personnel
+GROUP BY Personnel.fonction
+ORDER BY Avg(Personnel.salaire) DESC;
+5.SELECT Top 1 Count(Escale.id_escale) AS CompteDeid_escale, Mission.Fréquence
+FROM Mission LEFT JOIN Escale ON Mission.id_mission = Escale.id_mission
+GROUP BY Mission.Fréquence
+ORDER BY Count(Escale.id_escale) DESC;
+6.
+7.SELECT Personnel.nom, Personnel.fonction, Vol.Date_vol, Mission.ville_depart, Mission.heure_depart
+FROM Personnel RIGHT JOIN (Mission LEFT JOIN Vol ON Mission.id_mission = Vol.id_mission) ON Personnel.id_equipage = Vol.id_equipage
+GROUP BY Personnel.nom, Personnel.fonction, Vol.Date_vol, Mission.ville_depart, Mission.heure_depart
+HAVING (((Personnel.fonction)="pilote") AND ((Vol.Date_vol)=#12/19/2014#) AND ((Mission.ville_depart)="Créteil") AND ((Mission.heure_depart)="10h00"));
+8.SELECT Mission.ville_arrivee, Mission.ville_depart, Max(Vol.id_vol) AS MaxDeid_vol
+FROM Mission LEFT JOIN Vol ON Mission.id_mission = Vol.id_mission
+GROUP BY Mission.ville_arrivee, Mission.ville_depart
+HAVING (((Mission.ville_arrivee)="Annecy") AND ((Mission.ville_depart)="Créteil"));

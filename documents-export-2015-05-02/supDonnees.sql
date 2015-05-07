@@ -1,0 +1,10 @@
+delete from vol;
+delete from elements;
+delete from revision;
+delete from escale;
+delete from mission;
+delete from non_navigant;
+delete from navigant;
+delete from equipage;
+delete from avion;
+delete from type;
