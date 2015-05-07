@@ -3,10 +3,6 @@
 --  Ref SEQUENCE increase 1 automatiquement
 --------------------------------------------------------
 
-CREATE SEQUENCE increase_equipe_seq
-START WITH 1
-INCREMENT BY 1
-NOMAXVALUE NOCYCLE NOCACHE;
 
 CREATE SEQUENCE increase_elem_seq
 START WITH 1
@@ -53,14 +49,6 @@ BEGIN
 	FROM DUAL;
 END;
 
-CREATE OR REPLACE TRIGGER tgr_equipe_id
-BEFORE INSERT ON "EQUIPE" 
-FOR EACH ROW WHEN (new.equipe_id IS NULL)
-BEGIN  --xym
-	SELECT increase_equipe_seq.nextval INTO :new.equipe_id
-	FROM DUAL;
-END;
-
 CREATE OR REPLACE TRIGGER tgr_mission_id
 BEFORE INSERT ON "MISSION" 
 FOR EACH ROW WHEN (new.mis_id IS NULL)
@@ -101,7 +89,6 @@ BEGIN
 	FROM DUAL;
 END;
 
-
 CREATE OR REPLACE TRIGGER tgr_reservation_id
 BEFORE INSERT ON "RESERVATION" 
 FOR EACH ROW WHEN (new.res_id IS NULL)
@@ -109,13 +96,3 @@ BEGIN
 	SELECT increase_reservation_seq.nextval INTO :new.res_id
 	FROM DUAL;
 END;
--------------------------------------
---Déclancheurs
--------------------------------------
-/*CREATE OR REPLACE TRIGGER tgr_emp_id
-BEFORE INSERT ON "EMPLOYEE" 
-FOR EACH ROW WHEN (new.emp_id IS NULL)
-BEGIN 
-	SELECT increase_emp_seq.nextval INTO :new.emp_id
-	FROM DUAL;
-END;*/
